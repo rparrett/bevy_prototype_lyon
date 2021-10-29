@@ -4,16 +4,24 @@ use bevy_prototype_lyon::prelude::*;
 fn main() {
     App::build()
         .insert_resource(Msaa { samples: 4 })
+        .insert_resource(ShapeChangeTimer(Timer::from_seconds(2.0, true)))
+        .insert_resource(ShapeSides { num: 6, delta: -1 })
         .add_plugins(DefaultPlugins)
         .add_plugin(ShapePlugin)
         .add_startup_system(setup.system())
         .add_system(change_color.system())
         .add_system(change_stroke.system())
+        .add_system(change_shape.system())
         .add_system(rotate.system())
         .run();
 }
 
 struct ExampleShape;
+struct ShapeChangeTimer(Timer);
+struct ShapeSides {
+    num: i32,
+    delta: i32,
+}
 
 fn rotate(mut query: Query<&mut Transform, With<ExampleShape>>, time: Res<Time>) {
     for mut transform in query.iter_mut() {
@@ -42,6 +50,40 @@ fn change_stroke(mut query: Query<&mut DrawMode>, time: Res<Time>) {
             fill_options: FillOptions::default(),
             outline_options: StrokeOptions::default().with_line_width(w as f32),
         }
+    }
+}
+
+fn change_shape(
+    mut commands: Commands,
+    query: Query<Entity, With<ExampleShape>>,
+    mut sides: ResMut<ShapeSides>,
+    mut timer: ResMut<ShapeChangeTimer>,
+    time: Res<Time>,
+) {
+    timer.0.tick(time.delta());
+    if !timer.0.just_finished() {
+        return;
+    }
+
+    for ent in query.iter() {
+        sides.num += sides.delta;
+        if sides.num >= 6 || sides.num <= 3 {
+            sides.delta = -sides.delta;
+        }
+
+        let mut builder = Builder::default();
+
+        let shape = shapes::RegularPolygon {
+            sides: sides.num as usize,
+            feature: shapes::RegularPolygonFeature::Radius(200.0),
+            ..shapes::RegularPolygon::default()
+        };
+
+        shape.add_geometry(&mut builder);
+
+        let path = builder.build();
+
+        commands.entity(ent).insert(path);
     }
 }
 

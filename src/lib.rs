@@ -39,7 +39,7 @@ pub mod utils;
 /// convenient imports.
 pub mod prelude {
     pub use lyon_tessellation::{
-        FillOptions, FillRule, LineCap, LineJoin, Orientation, StrokeOptions,
+        path::path::Builder, FillOptions, FillRule, LineCap, LineJoin, Orientation, StrokeOptions,
     };
 
     pub use crate::{
