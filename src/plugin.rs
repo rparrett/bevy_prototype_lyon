@@ -15,7 +15,7 @@ use bevy::{
     app::{AppBuilder, Plugin},
     asset::{Assets, Handle},
     ecs::{
-        query::{Added, Changed, Or},
+        query::{Changed, Or},
         schedule::{StageLabel, SystemStage},
         system::{IntoSystem, Query, ResMut},
     },
@@ -111,7 +111,7 @@ fn complete_shape_bundle(
     mut stroke_tess: ResMut<StrokeTessellator>,
     mut query: Query<
         (&DrawMode, &Path, &mut Handle<Mesh>, &ShapeColors),
-        Or<(Added<Path>, Changed<ShapeColors>, Changed<DrawMode>)>,
+        Or<(Changed<Path>, Changed<ShapeColors>, Changed<DrawMode>)>,
     >,
 ) {
     for (tess_mode, path, mut mesh, colors) in query.iter_mut() {
