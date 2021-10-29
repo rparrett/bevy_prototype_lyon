@@ -2,14 +2,14 @@ use bevy::prelude::*;
 use bevy_prototype_lyon::prelude::*;
 
 fn main() {
-    App::new()
+    App::build()
         .insert_resource(Msaa { samples: 4 })
         .add_plugins(DefaultPlugins)
         .add_plugin(ShapePlugin)
-        .add_startup_system(setup)
-        .add_system(change_color)
-        .add_system(change_stroke)
-        .add_system(rotate)
+        .add_startup_system(setup.system())
+        .add_system(change_color.system())
+        .add_system(change_stroke.system())
+        .add_system(rotate.system())
         .run();
 }
 
