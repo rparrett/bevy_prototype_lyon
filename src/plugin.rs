@@ -19,19 +19,18 @@ use bevy::{
         system::{Query, ResMut, Resource},
     },
     log::error,
-    prelude::{CoreStage, Deref, DerefMut, IntoSystemDescriptor, SystemLabel},
+    prelude::{Color, CoreStage, Deref, DerefMut, Handle, IntoSystemDescriptor, SystemLabel},
     render::{
         mesh::{Indices, Mesh},
         render_resource::PrimitiveTopology,
     },
-    sprite::Mesh2dHandle,
+    sprite::{ColorMaterial, Mesh2dHandle},
 };
 use lyon_tessellation::{self as tess, BuffersBuilder};
 
 use crate::{
     draw::{DrawMode, FillMode, StrokeMode},
     entity::Path,
-    render::RenderShapePlugin,
     vertex::{VertexBuffers, VertexConstructor},
 };
 
@@ -50,8 +49,7 @@ impl Plugin for ShapePlugin {
                 mesh_shapes_system
                     .label(BuildShapes)
                     .after(bevy::transform::TransformSystem::TransformPropagate),
-            )
-            .add_plugin(RenderShapePlugin);
+            );
     }
 }
 
@@ -67,9 +65,18 @@ fn mesh_shapes_system(
     mut meshes: ResMut<Assets<Mesh>>,
     mut fill_tess: ResMut<FillTessellator>,
     mut stroke_tess: ResMut<StrokeTessellator>,
-    mut query: Query<(&DrawMode, &Path, &mut Mesh2dHandle), Or<(Changed<Path>, Changed<DrawMode>)>>,
+    mut query: Query<
+        (
+            &DrawMode,
+            &Path,
+            &mut Mesh2dHandle,
+            &mut Handle<ColorMaterial>,
+        ),
+        Or<(Changed<Path>, Changed<DrawMode>)>,
+    >,
+    mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    for (tess_mode, path, mut mesh) in query.iter_mut() {
+    for (tess_mode, path, mut mesh, mut material) in query.iter_mut() {
         let mut buffers = VertexBuffers::new();
 
         match tess_mode {
@@ -83,10 +90,13 @@ fn mesh_shapes_system(
                 fill_mode,
                 outline_mode,
             } => {
-                fill(&mut fill_tess, &path.0, fill_mode, &mut buffers);
                 stroke(&mut stroke_tess, &path.0, outline_mode, &mut buffers);
+                fill(&mut fill_tess, &path.0, fill_mode, &mut buffers);
             }
         }
+
+        let mat = ColorMaterial::from(Color::WHITE);
+        *material = materials.add(mat);
 
         mesh.0 = meshes.add(build_mesh(&buffers));
     }
@@ -126,7 +136,9 @@ fn stroke(
 
 fn build_mesh(buffers: &VertexBuffers) -> Mesh {
     let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-    mesh.set_indices(Some(Indices::U32(buffers.indices.clone())));
+    mesh.set_indices(Some(Indices::U32(
+        buffers.indices.iter().rev().cloned().collect(),
+    )));
     mesh.insert_attribute(
         Mesh::ATTRIBUTE_POSITION,
         buffers
