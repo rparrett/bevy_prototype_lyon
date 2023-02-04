@@ -112,7 +112,8 @@ fn fill(
     if let Err(e) = tess.tessellate_path(
         path,
         &mode.options,
-        &mut BuffersBuilder::new(buffers, VertexConstructor { color: mode.color }),
+        &mut BuffersBuilder::new(buffers, VertexConstructor { color: mode.color })
+            .with_inverted_winding(),
     ) {
         error!("FillTessellator error: {:?}", e);
     }
@@ -128,7 +129,8 @@ fn stroke(
     if let Err(e) = tess.tessellate_path(
         path,
         &mode.options,
-        &mut BuffersBuilder::new(buffers, VertexConstructor { color: mode.color }),
+        &mut BuffersBuilder::new(buffers, VertexConstructor { color: mode.color })
+            .with_inverted_winding(),
     ) {
         error!("StrokeTessellator error: {:?}", e);
     }
@@ -136,9 +138,7 @@ fn stroke(
 
 fn build_mesh(buffers: &VertexBuffers) -> Mesh {
     let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
-    mesh.set_indices(Some(Indices::U32(
-        buffers.indices.iter().rev().copied().collect(),
-    )));
+    mesh.set_indices(Some(Indices::U32(buffers.indices.clone())));
     mesh.insert_attribute(
         Mesh::ATTRIBUTE_POSITION,
         buffers
