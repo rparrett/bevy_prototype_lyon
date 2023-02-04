@@ -90,8 +90,8 @@ fn mesh_shapes_system(
                 fill_mode,
                 outline_mode,
             } => {
-                stroke(&mut stroke_tess, &path.0, outline_mode, &mut buffers);
                 fill(&mut fill_tess, &path.0, fill_mode, &mut buffers);
+                stroke(&mut stroke_tess, &path.0, outline_mode, &mut buffers);
             }
         }
 
