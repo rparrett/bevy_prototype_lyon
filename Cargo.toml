@@ -16,6 +16,7 @@ version = "0.7.2"
 bevy = { git = "https://github.com/bevyengine/bevy", branch = "main", default-features = false, features = ["bevy_sprite", "bevy_render", "bevy_core_pipeline", "bevy_asset"] }
 lyon_tessellation = "1"
 svgtypes = "0.8"
+bitflags = "1.2"
 
 [dev-dependencies]
-bevy = { git = "https://github.com/bevyengine/bevy", branch = "main", default-features = false, features = ["x11", "bevy_asset"] }
+bevy = { git = "https://github.com/bevyengine/bevy", branch = "main", default-features = false, features = ["x11", "bevy_asset", "png"] }

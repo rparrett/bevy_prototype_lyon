@@ -3,13 +3,14 @@
 use bevy::{
     ecs::{bundle::Bundle, component::Component},
     render::color::Color,
-    sprite::{ColorMaterial, MaterialMesh2dBundle},
+    sprite::MaterialMesh2dBundle,
 };
 use lyon_tessellation::{self as tess, FillOptions};
 
 use crate::{
     draw::{DrawMode, FillMode},
     prelude::Geometry,
+    render::ShapeMaterial,
 };
 
 /// A Bevy `Bundle` to represent a shape.
@@ -17,7 +18,7 @@ use crate::{
 #[derive(Bundle)]
 pub struct ShapeBundle {
     #[bundle]
-    pub mesh2d_bundle: MaterialMesh2dBundle<ColorMaterial>,
+    pub mesh2d_bundle: MaterialMesh2dBundle<ShapeMaterial>,
     pub path: Path,
     pub mode: DrawMode,
 }
@@ -30,7 +31,7 @@ impl Default for ShapeBundle {
                 options: FillOptions::default(),
                 color: Color::WHITE,
             }),
-            mesh2d_bundle: MaterialMesh2dBundle::<ColorMaterial>::default(),
+            mesh2d_bundle: MaterialMesh2dBundle::<ShapeMaterial>::default(),
         }
     }
 }
