@@ -137,7 +137,7 @@ fn stroke(
 fn build_mesh(buffers: &VertexBuffers) -> Mesh {
     let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
     mesh.set_indices(Some(Indices::U32(
-        buffers.indices.iter().rev().cloned().collect(),
+        buffers.indices.iter().rev().copied().collect(),
     )));
     mesh.insert_attribute(
         Mesh::ATTRIBUTE_POSITION,
