@@ -19,18 +19,19 @@ use bevy::{
         system::{Query, ResMut, Resource},
     },
     log::error,
-    prelude::{Color, CoreStage, Deref, DerefMut, Handle, IntoSystemDescriptor, SystemLabel},
+    prelude::{CoreStage, Deref, DerefMut, IntoSystemDescriptor, SystemLabel},
     render::{
         mesh::{Indices, Mesh},
         render_resource::PrimitiveTopology,
     },
-    sprite::{ColorMaterial, Mesh2dHandle},
+    sprite::Mesh2dHandle,
 };
 use lyon_tessellation::{self as tess, BuffersBuilder};
 
 use crate::{
     draw::{DrawMode, FillMode, StrokeMode},
     entity::Path,
+    render::ShapeMaterialPlugin,
     vertex::{VertexBuffers, VertexConstructor},
 };
 
@@ -42,7 +43,8 @@ impl Plugin for ShapePlugin {
     fn build(&self, app: &mut App) {
         let fill_tess = lyon_tessellation::FillTessellator::new();
         let stroke_tess = lyon_tessellation::StrokeTessellator::new();
-        app.insert_resource(FillTessellator(fill_tess))
+        app.add_plugin(ShapeMaterialPlugin)
+            .insert_resource(FillTessellator(fill_tess))
             .insert_resource(StrokeTessellator(stroke_tess))
             .add_system_to_stage(
                 CoreStage::PostUpdate,
@@ -65,38 +67,26 @@ fn mesh_shapes_system(
     mut meshes: ResMut<Assets<Mesh>>,
     mut fill_tess: ResMut<FillTessellator>,
     mut stroke_tess: ResMut<StrokeTessellator>,
-    mut query: Query<
-        (
-            &DrawMode,
-            &Path,
-            &mut Mesh2dHandle,
-            &mut Handle<ColorMaterial>,
-        ),
-        Or<(Changed<Path>, Changed<DrawMode>)>,
-    >,
-    mut materials: ResMut<Assets<ColorMaterial>>,
+    mut query: Query<(&DrawMode, &Path, &mut Mesh2dHandle), Or<(Changed<Path>, Changed<DrawMode>)>>,
 ) {
-    for (tess_mode, path, mut mesh, mut material) in query.iter_mut() {
+    for (tess_mode, path, mut mesh) in query.iter_mut() {
         let mut buffers = VertexBuffers::new();
 
         match tess_mode {
             DrawMode::Fill(mode) => {
-                fill(&mut fill_tess, &path.0, mode, &mut buffers);
+                fill(&mut fill_tess, &path.0, &mode, &mut buffers);
             }
             DrawMode::Stroke(mode) => {
-                stroke(&mut stroke_tess, &path.0, mode, &mut buffers);
+                stroke(&mut stroke_tess, &path.0, &mode, &mut buffers);
             }
             DrawMode::Outlined {
                 fill_mode,
                 outline_mode,
             } => {
-                fill(&mut fill_tess, &path.0, fill_mode, &mut buffers);
-                stroke(&mut stroke_tess, &path.0, outline_mode, &mut buffers);
+                fill(&mut fill_tess, &path.0, &fill_mode, &mut buffers);
+                stroke(&mut stroke_tess, &path.0, &outline_mode, &mut buffers);
             }
         }
-
-        let mat = ColorMaterial::from(Color::WHITE);
-        *material = materials.add(mat);
 
         mesh.0 = meshes.add(build_mesh(&buffers));
     }
@@ -139,6 +129,7 @@ fn stroke(
 fn build_mesh(buffers: &VertexBuffers) -> Mesh {
     let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
     mesh.set_indices(Some(Indices::U32(buffers.indices.clone())));
+
     mesh.insert_attribute(
         Mesh::ATTRIBUTE_POSITION,
         buffers
