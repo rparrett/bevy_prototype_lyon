@@ -34,7 +34,7 @@ fn redraw_shape(mut query: Query<&mut Shape, With<ExampleShape>>, time: Res<Time
         ..shapes::RegularPolygon::default()
     };
 
-    let mut shape = query.single_mut();
+    let mut shape = query.single_mut().expect("Shape entity must always exist");
     *shape = ShapeBuilder::with(&polygon)
         .fill(color)
         .stroke((BLACK, outline_width as f32))
