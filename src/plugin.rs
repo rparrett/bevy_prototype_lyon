@@ -31,7 +31,9 @@ impl Plugin for ShapePlugin {
             .insert_resource(StrokeTessellator(stroke_tess))
             .configure_sets(
                 PostUpdate,
-                BuildShapes.after(bevy::transform::TransformSystem::TransformPropagate),
+                BuildShapes
+                    .after(bevy::transform::TransformSystem::TransformPropagate)
+                    .before(bevy::asset::AssetEvents),
             )
             .add_systems(PostUpdate, mesh_shapes_system.in_set(BuildShapes));
 
