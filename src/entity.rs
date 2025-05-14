@@ -39,7 +39,7 @@ impl Default for ShapeBundle {
 ///
 /// It can be constructed using `ShapeBuilder`.
 #[derive(Component, Default, Clone)]
-#[require(Mesh2d, MeshMaterial2d::<ColorMaterial>, Transform, Visibility)]
+#[require(Mesh2d, MeshMaterial2d::<ColorMaterial>(COLOR_MATERIAL_HANDLE), Transform, Visibility)]
 #[non_exhaustive]
 pub struct Shape {
     /// Geometry of a shape.
@@ -60,8 +60,4 @@ impl Geometry<Builder> for Shape {
     fn add_geometry(&self, b: &mut Builder) {
         b.extend_from_paths(&[self.path.as_slice()]);
     }
-}
-
-fn color_material_handle() -> MeshMaterial2d<ColorMaterial> {
-    MeshMaterial2d(COLOR_MATERIAL_HANDLE)
 }
