@@ -34,11 +34,12 @@ fn redraw_shape(mut query: Query<&mut Shape, With<ExampleShape>>, time: Res<Time
         ..shapes::RegularPolygon::default()
     };
 
-    let mut shape = query.single_mut();
-    *shape = ShapeBuilder::with(&polygon)
-        .fill(color)
-        .stroke((BLACK, outline_width as f32))
-        .build();
+    if let Ok(mut shape) = query.single_mut() {
+        *shape = ShapeBuilder::with(&polygon)
+            .fill(color)
+            .stroke((BLACK, outline_width as f32))
+            .build();
+    }
 }
 
 fn setup_system(mut commands: Commands) {

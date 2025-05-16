@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.0
+
+- Support for Bevy 0.16.0.
+
 ## 0.14.0
 
 This version uses Bevy's **Required Components**,

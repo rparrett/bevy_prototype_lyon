@@ -6,6 +6,7 @@
 use bevy::{
     prelude::*,
     render::{mesh::Indices, render_asset::RenderAssetUsages, render_resource::PrimitiveTopology},
+    asset::weak_handle
 };
 use lyon_tessellation::{self as tess, BuffersBuilder};
 
@@ -16,7 +17,7 @@ use crate::{
 };
 
 pub(crate) const COLOR_MATERIAL_HANDLE: Handle<ColorMaterial> =
-    Handle::weak_from_u128(0x7CC6_61A1_0CD6_C147_129A_2C01_882D_9580);
+    weak_handle!("7cc661a1-0cd6-c147-129a-2c01882d9580");
 
 /// A plugin that provides resources and a system to draw shapes in Bevy with
 /// less boilerplate.

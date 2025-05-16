@@ -61,20 +61,22 @@ I strive to support the latest version of Bevy. Support for a version of Bevy is
 
 The following table shows the latest version of `bevy_prototype_lyon` that supports a certain version of Bevy.
 
-|bevy|bevy_prototype_lyon|license|
-|---|---|---|
-|0.15|0.13|MIT/Apache 2.0|
-|0.14|0.12|MIT/Apache 2.0|
-|0.13|0.11|MIT/Apache 2.0|
-|0.12|0.10|MIT/Apache 2.0|
-|0.11|0.9|MIT/Apache 2.0|
-|0.10|0.8|MIT/Apache 2.0|
-|0.9 |0.7|MIT/Apache 2.0|
-|0.8 |0.6|MIT/Apache 2.0|
-|0.7 |0.5|MIT/Apache 2.0|
-|0.6 |0.4|MIT/Apache 2.0|
-|0.5 |0.3|MIT|
-|0.4 |0.2|MIT|
+| bevy | bevy_prototype_lyon | license        |
+|------|---------------------|----------------|
+| 0.16 | 0.15                | MIT/Apache 2.0 |
+| 0.15 | 0.14                | MIT/Apache 2.0 |
+| 0.15 | 0.13                | MIT/Apache 2.0 |
+| 0.14 | 0.12                | MIT/Apache 2.0 |
+| 0.13 | 0.11                | MIT/Apache 2.0 |
+| 0.12 | 0.10                | MIT/Apache 2.0 |
+| 0.11 | 0.9                 | MIT/Apache 2.0 |
+| 0.10 | 0.8                 | MIT/Apache 2.0 |
+| 0.9  | 0.7                 | MIT/Apache 2.0 |
+| 0.8  | 0.6                 | MIT/Apache 2.0 |
+| 0.7  | 0.5                 | MIT/Apache 2.0 |
+| 0.6  | 0.4                 | MIT/Apache 2.0 |
+| 0.5  | 0.3                 | MIT            |
+| 0.4  | 0.2                 | MIT            |
 
 ***
 
@@ -82,8 +84,8 @@ The following table shows the latest version of `bevy_prototype_lyon` that suppo
 
 Licensed under either of
 
- * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
- * MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+* MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
 at your option.
 

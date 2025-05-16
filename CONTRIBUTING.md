@@ -68,8 +68,9 @@ Make sure to explain the motivation behind the desired change.
 Keep in mind that some suggestions
 may have side effects
 that negatively impact established use cases.
-Therefore they should be thoroughly discussed
+Therefore, they should be thoroughly discussed
 before implementing them.
 
 [issues]: https://github.com/Nilirad/bevy_prototype_lyon/issues
+
 [pull requests]: https://docs.github.com/en/pull-requests
