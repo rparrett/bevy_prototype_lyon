@@ -42,10 +42,9 @@ fn rotate_shape_by_size(mut query: Query<(&mut Transform, &Shape)>, time: Res<Ti
 }
 
 /// Change line width of the hexagon over time.
-fn redraw_line_width(mut query: Query<&mut Shape, With<HexagonShape>>, time: Res<Time>) {
+fn redraw_line_width(mut shape: Single<&mut Shape, With<HexagonShape>>, time: Res<Time>) {
     let outline_width = 2.0 + time.elapsed_secs_f64().sin().abs() * 10.0;
 
-    let mut shape = query.single_mut();
     shape.stroke = shape.stroke.map(|mut s| {
         s.options.line_width = outline_width as f32;
         s
@@ -53,11 +52,10 @@ fn redraw_line_width(mut query: Query<&mut Shape, With<HexagonShape>>, time: Res
 }
 
 /// Change fill color of the triangle over time.
-fn redraw_fill(mut query: Query<&mut Shape, With<TriangleShape>>, time: Res<Time>) {
+fn redraw_fill(mut shape: Single<&mut Shape, With<TriangleShape>>, time: Res<Time>) {
     let hue = (time.elapsed_secs_f64() * 50.0) % 360.0;
     let color = Color::hsl(hue as f32, 1.0, 0.5);
 
-    let mut shape = query.single_mut();
     shape.fill = shape.fill.map(|mut f| {
         f.color = color;
         f

@@ -4,8 +4,13 @@
 //! boilerplate.
 
 use bevy::{
+    asset::{uuid_handle, RenderAssetUsages},
     prelude::*,
-    render::{mesh::Indices, render_asset::RenderAssetUsages, render_resource::PrimitiveTopology},
+    camera::primitives::{Aabb, MeshAabb},
+    mesh::Indices,
+    render::{
+        render_resource::PrimitiveTopology,
+    },
 };
 use lyon_tessellation::{self as tess, BuffersBuilder};
 
@@ -16,7 +21,7 @@ use crate::{
 };
 
 pub(crate) const COLOR_MATERIAL_HANDLE: Handle<ColorMaterial> =
-    Handle::weak_from_u128(0x7CC6_61A1_0CD6_C147_129A_2C01_882D_9580);
+    uuid_handle!("7cc661a1-0cd6-c147-129a-2c01882d9580");
 
 /// A plugin that provides resources and a system to draw shapes in Bevy with
 /// less boilerplate.
@@ -30,11 +35,13 @@ impl Plugin for ShapePlugin {
             .insert_resource(StrokeTessellator(stroke_tess))
             .configure_sets(
                 PostUpdate,
-                BuildShapes.after(bevy::transform::TransformSystem::TransformPropagate),
+                BuildShapes
+                    .after(bevy::transform::TransformSystems::Propagate)
+                    .before(bevy::asset::AssetEventSystems),
             )
             .add_systems(PostUpdate, mesh_shapes_system.in_set(BuildShapes));
 
-        app.world_mut()
+        if let Err(e) = app.world_mut()
             .resource_mut::<Assets<ColorMaterial>>()
             .insert(
                 &COLOR_MATERIAL_HANDLE,
@@ -42,7 +49,9 @@ impl Plugin for ShapePlugin {
                     color: Color::WHITE,
                     ..default()
                 },
-            );
+            ) {
+                error!("Failed to add resource: {:?}", e);
+            }
     }
 }
 
@@ -59,9 +68,9 @@ fn mesh_shapes_system(
     mut meshes: ResMut<Assets<Mesh>>,
     mut fill_tess: ResMut<FillTessellator>,
     mut stroke_tess: ResMut<StrokeTessellator>,
-    mut query: Query<(&Shape, &mut Mesh2d), Changed<Shape>>,
+    mut query: Query<(&Shape, &mut Mesh2d, Option<&mut Aabb>), Changed<Shape>>,
 ) {
-    for (shape, mut mesh) in &mut query {
+    for (shape, mut mesh, aabb) in &mut query {
         let mut buffers = VertexBuffers::new();
         if let Some(fill_mode) = shape.fill {
             fill(&mut fill_tess, &shape.path, fill_mode, &mut buffers);
@@ -69,7 +78,11 @@ fn mesh_shapes_system(
         if let Some(stroke_mode) = shape.stroke {
             stroke(&mut stroke_tess, &shape.path, stroke_mode, &mut buffers);
         }
-        mesh.0 = meshes.add(build_mesh(&buffers));
+        let m = build_mesh(&buffers);
+        if let (Some(mut aabb), Some(new_aabb)) = (aabb, m.compute_aabb()) {
+            *aabb = new_aabb;
+        }
+        mesh.0 = meshes.add(m);
     }
 }
 

@@ -23,7 +23,7 @@ fn rotate_shape_system(mut query: Query<&mut Transform, With<ExampleShape>>, tim
     }
 }
 
-fn redraw_shape(mut query: Query<&mut Shape, With<ExampleShape>>, time: Res<Time>) {
+fn redraw_shape(mut shape: Single<&mut Shape, With<ExampleShape>>, time: Res<Time>) {
     let hue = (time.elapsed_secs_f64() * 50.0) % 360.0;
     let color = Color::hsl(hue as f32, 1.0, 0.5);
     let outline_width = 2.0 + time.elapsed_secs_f64().sin().abs() * 10.0;
@@ -34,8 +34,7 @@ fn redraw_shape(mut query: Query<&mut Shape, With<ExampleShape>>, time: Res<Time
         ..shapes::RegularPolygon::default()
     };
 
-    let mut shape = query.single_mut();
-    *shape = ShapeBuilder::with(&polygon)
+    **shape = ShapeBuilder::with(&polygon)
         .fill(color)
         .stroke((BLACK, outline_width as f32))
         .build();
