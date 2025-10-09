@@ -13,7 +13,7 @@ version = "0.15.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bevy = { version = "0.17.0-rc.2", default-features = false, features = [
+bevy = { version = "0.17.0", default-features = false, features = [
   "bevy_asset",
   "bevy_render",
   "bevy_sprite_render",
@@ -24,4 +24,4 @@ lyon_algorithms = "1"
 svgtypes = "0.15"
 
 [dev-dependencies]
-bevy = "0.17.0-rc.2"
+bevy = "0.17.0"
