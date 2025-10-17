@@ -2,7 +2,7 @@
 
 ## 0.15.0
 
-TODO
+* Upgrade to Bevy 0.17 by @rparrett in <https://github.com/rparrett/bevy_prototype_lyon/pull/292>
 
 ## 0.14.1
 
