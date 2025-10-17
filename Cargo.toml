@@ -18,10 +18,9 @@ version = "0.14.1"
 [dependencies]
 bevy = { version = "0.17", default-features = false, features = [
 	"bevy_asset",
-	"bevy_core_pipeline",
 	"bevy_log",
 	"bevy_render",
-	"bevy_sprite",
+	"bevy_sprite_render",
 ] }
 lyon_tessellation = "1"
 lyon_algorithms = "1"
