@@ -98,8 +98,10 @@ fn setup_system(mut commands: Commands) {
         Transform::default().with_translation(Vec3::new(0.0, 0.0, 1.0)),
         HexagonShape,
     ));
-    commands.spawn((ShapeBuilder::with(&big_square)
-        .fill(ORANGE)
-        .stroke((BLACK, 10.0))
-        .build(),));
+    commands.spawn(
+        ShapeBuilder::with(&big_square)
+            .fill(ORANGE)
+            .stroke((BLACK, 10.0))
+            .build(),
+    );
 }
