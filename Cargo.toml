@@ -14,10 +14,11 @@ version = "0.14.0"
 
 [dependencies]
 bevy = { version = "0.16", default-features = false, features = [
-	"bevy_sprite",
-	"bevy_render",
-	"bevy_core_pipeline",
 	"bevy_asset",
+	"bevy_core_pipeline",
+	"bevy_log",
+	"bevy_render",
+	"bevy_sprite",
 ] }
 lyon_tessellation = "1"
 lyon_algorithms = "1"
