@@ -1,7 +1,7 @@
 //! Tools for drawing circles.
 
 use bevy::math::Vec2;
-use lyon_tessellation::path::{path::Builder, Winding};
+use lyon_tessellation::path::{Winding, path::Builder};
 
 use crate::{geometry::Geometry, utils::ToPoint};
 

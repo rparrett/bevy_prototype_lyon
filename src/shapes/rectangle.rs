@@ -4,7 +4,7 @@ use bevy::math::Vec2;
 use lyon_tessellation::{
     geom::euclid::default::Size2D,
     math::{Box2D, Point},
-    path::{builder::BorderRadii as LyonBorderRadii, path::Builder, Winding},
+    path::{Winding, builder::BorderRadii as LyonBorderRadii, path::Builder},
 };
 
 use crate::geometry::Geometry;

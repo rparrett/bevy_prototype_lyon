@@ -3,7 +3,7 @@
 use bevy::math::Vec2;
 use lyon_tessellation::{
     math::{Angle, Point, Vector},
-    path::{builder::WithSvg, path::Builder, traits::SvgPathBuilder, ArcFlags},
+    path::{ArcFlags, builder::WithSvg, path::Builder, traits::SvgPathBuilder},
 };
 use svgtypes::{PathParser, PathSegment};
 

@@ -4,7 +4,7 @@
 //! plus a couple of builders and associated traits.
 //! To build any shape, start with [`ShapeBuilder`].
 
-use lyon_algorithms::path::{builder::WithSvg, traits::Build, BuilderImpl};
+use lyon_algorithms::path::{BuilderImpl, builder::WithSvg, traits::Build};
 use lyon_tessellation::path::path::Builder;
 
 use crate::{
