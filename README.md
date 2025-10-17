@@ -63,6 +63,7 @@ The following table shows the latest version of `bevy_prototype_lyon` that suppo
 
 |bevy|bevy_prototype_lyon|license|
 |---|---|---|
+|0.16|0.14|MIT/Apache 2.0|
 |0.15|0.13|MIT/Apache 2.0|
 |0.14|0.12|MIT/Apache 2.0|
 |0.13|0.11|MIT/Apache 2.0|
@@ -82,8 +83,8 @@ The following table shows the latest version of `bevy_prototype_lyon` that suppo
 
 Licensed under either of
 
- * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
- * MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
+* MIT license ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
 
 at your option.
 
