@@ -5,7 +5,7 @@ authors = [
 ]
 categories = ["game-engines", "graphics", "rendering"]
 description = "Draw 2D shapes and paths in the Bevy game engine."
-edition = "2021"
+edition = "2024"
 keywords = ["game", "shapes", "gamedev", "graphics", "bevy"]
 license = "MIT OR Apache-2.0"
 name = "bevy_prototype_lyon"

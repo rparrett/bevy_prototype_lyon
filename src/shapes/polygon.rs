@@ -2,8 +2,8 @@
 
 use bevy::math::Vec2;
 use lyon_tessellation::{
-    math::{point, Point},
-    path::{path::Builder, Polygon as LyonPolygon},
+    math::{Point, point},
+    path::{Polygon as LyonPolygon, path::Builder},
 };
 
 use crate::{geometry::Geometry, utils::ToPoint};

@@ -1,7 +1,7 @@
 //! Tools for drawing line segments.
 
 use bevy::math::Vec2;
-use lyon_tessellation::path::{path::Builder, Polygon as LyonPolygon};
+use lyon_tessellation::path::{Polygon as LyonPolygon, path::Builder};
 
 use crate::{geometry::Geometry, utils::ToPoint};
 

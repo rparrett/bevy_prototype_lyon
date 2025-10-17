@@ -3,7 +3,7 @@
 use bevy::math::Vec2;
 use lyon_tessellation::{
     math::Angle,
-    path::{path::Builder, Winding},
+    path::{Winding, path::Builder},
 };
 
 use crate::{
