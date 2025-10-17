@@ -1,5 +1,4 @@
 //! Custom Bevy ECS bundle for shapes.
-#![expect(deprecated)]
 
 use bevy::prelude::*;
 use lyon_algorithms::path::Builder;
@@ -10,30 +9,6 @@ use crate::{
     geometry::Geometry,
     plugin::COLOR_MATERIAL_HANDLE,
 };
-
-/// A Bevy `Bundle` to represent a shape.
-#[deprecated(since = "0.14.0", note = "please use the `Shape` component instead.")]
-#[allow(missing_docs)]
-#[derive(Bundle, Clone)]
-pub struct ShapeBundle {
-    pub path: Shape,
-    pub mesh: Mesh2d,
-    pub material: MeshMaterial2d<ColorMaterial>,
-    pub transform: Transform,
-    pub visibility: Visibility,
-}
-
-impl Default for ShapeBundle {
-    fn default() -> Self {
-        Self {
-            path: default(),
-            mesh: default(),
-            material: MeshMaterial2d(COLOR_MATERIAL_HANDLE),
-            transform: default(),
-            visibility: default(),
-        }
-    }
-}
 
 /// `Component` describing a geometric shape.
 ///

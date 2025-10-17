@@ -11,21 +11,20 @@ license = "MIT OR Apache-2.0"
 name = "bevy_prototype_lyon"
 readme = "README.md"
 repository = "https://github.com/rparrett/bevy_prototype_lyon/"
-version = "0.14.1"
+version = "0.15.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bevy = { version = "0.16", default-features = false, features = [
+bevy = { version = "0.17", default-features = false, features = [
 	"bevy_asset",
-	"bevy_core_pipeline",
 	"bevy_log",
 	"bevy_render",
-	"bevy_sprite",
+	"bevy_sprite_render",
 ] }
 lyon_tessellation = "1"
 lyon_algorithms = "1"
 svgtypes = "0.15"
 
 [dev-dependencies]
-bevy = "0.16"
+bevy = "0.17"

@@ -4,9 +4,10 @@
 //! boilerplate.
 
 use bevy::{
-    asset::weak_handle,
+    asset::{RenderAssetUsages, uuid_handle},
+    mesh::Indices,
     prelude::*,
-    render::{mesh::Indices, render_asset::RenderAssetUsages, render_resource::PrimitiveTopology},
+    render::render_resource::PrimitiveTopology,
 };
 use lyon_tessellation::{self as tess, BuffersBuilder};
 
@@ -17,7 +18,7 @@ use crate::{
 };
 
 pub(crate) const COLOR_MATERIAL_HANDLE: Handle<ColorMaterial> =
-    weak_handle!("7cc661a1-0cd6-c147-129a-2c01882d9580");
+    uuid_handle!("7cc661a1-0cd6-c147-129a-2c01882d9580");
 
 /// A plugin that provides resources and a system to draw shapes in Bevy with
 /// less boilerplate.
@@ -32,20 +33,23 @@ impl Plugin for ShapePlugin {
             .configure_sets(
                 PostUpdate,
                 BuildShapes
-                    .after(bevy::transform::TransformSystem::TransformPropagate)
-                    .before(bevy::asset::AssetEvents),
+                    .after(bevy::transform::TransformSystems::Propagate)
+                    .before(bevy::asset::AssetEventSystems),
             )
             .add_systems(PostUpdate, mesh_shapes_system.in_set(BuildShapes));
 
-        app.world_mut()
-            .resource_mut::<Assets<ColorMaterial>>()
-            .insert(
+        if let Some(mut materials) = app.world_mut().get_resource_mut::<Assets<ColorMaterial>>() {
+            // `insert` will not fail for uuid assets
+            let _ = materials.insert(
                 &COLOR_MATERIAL_HANDLE,
                 ColorMaterial {
                     color: Color::WHITE,
                     ..default()
                 },
             );
+        } else {
+            error!("Failed to get Assets<ColorMaterial> resource");
+        }
     }
 }
 
