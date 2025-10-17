@@ -72,7 +72,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Install stable toolchain
-        uses: dtolnay/rust-toolchain@nightly # Unstable formatter options used.
+        uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt
       - name: Run cargo fmt
