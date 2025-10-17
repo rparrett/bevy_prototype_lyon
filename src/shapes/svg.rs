@@ -43,7 +43,7 @@ pub struct SvgPathShape {
     pub svg_path_string: String,
 }
 fn get_y_in_bevy_orientation(y: f64) -> f32 {
-    y as f32 * -1.
+    -(y as f32)
 }
 fn get_y_after_offset(y: f64, offset_y: f32) -> f32 {
     get_y_in_bevy_orientation(y) + offset_y

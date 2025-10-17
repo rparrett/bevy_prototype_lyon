@@ -135,5 +135,5 @@ fn match_action(action: Action, b: &mut WithSvg<BuilderImpl>) {
         Action::Close => {
             b.close();
         }
-    };
+    }
 }

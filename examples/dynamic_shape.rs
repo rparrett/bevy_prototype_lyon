@@ -1,13 +1,16 @@
 use std::f64::consts::PI;
 
-use bevy::{color::palettes::css::*, prelude::*};
+use bevy::{color::palettes::css::*, input::common_conditions::input_just_pressed, prelude::*};
 use bevy_prototype_lyon::prelude::*;
 
 fn main() {
     App::new()
         .add_plugins((DefaultPlugins, ShapePlugin))
         .add_systems(Startup, setup_system)
-        .add_systems(Update, redraw_shape)
+        .add_systems(
+            Update,
+            redraw_shape.run_if(input_just_pressed(KeyCode::Space)),
+        )
         .add_systems(Update, rotate_shape_system)
         .run();
 }
@@ -34,7 +37,7 @@ fn redraw_shape(mut query: Query<&mut Shape, With<ExampleShape>>, time: Res<Time
         ..shapes::RegularPolygon::default()
     };
 
-    let mut shape = query.single_mut();
+    let mut shape = query.single_mut().expect("Shape entity must always exist");
     *shape = ShapeBuilder::with(&polygon)
         .fill(color)
         .stroke((BLACK, outline_width as f32))
