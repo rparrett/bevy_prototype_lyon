@@ -6,8 +6,8 @@
 //! [`Geometry`](geometry::Geometry) trait by your own.
 //!
 //! ## Usage
-//! Check out the `README.md` on the [**GitHub repository**](https://github.com/Nilirad/bevy_prototype_lyon)
-//! or run the [examples](https://github.com/Nilirad/bevy_prototype_lyon/tree/master/examples).
+//! Check out the `README.md` on the [**GitHub repository**](https://github.com/rparrett/bevy_prototype_lyon)
+//! or run the [examples](https://github.com/rparrett/bevy_prototype_lyon/tree/master/examples).
 
 // rustc
 #![deny(future_incompatible, nonstandard_style)]
