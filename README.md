@@ -3,8 +3,8 @@
 [![Crates.io](https://img.shields.io/crates/v/bevy_prototype_lyon)](https://crates.io/crates/bevy_prototype_lyon)
 [![Crates.io](https://img.shields.io/crates/l/bevy_prototype_lyon)](LICENSE)
 [![Downloads](https://img.shields.io/crates/d/bevy_prototype_lyon)](https://crates.io/crates/bevy_prototype_lyon)
-[![GitHub Repo stars](https://img.shields.io/github/stars/Nilirad/bevy_prototype_lyon)](https://github.com/Nilirad/bevy_prototype_lyon)
-[![CI](https://github.com/Nilirad/bevy_prototype_lyon/actions/workflows/ci.yml/badge.svg)](https://github.com/Nilirad/bevy_prototype_lyon/actions/workflows/ci.yml)
+[![GitHub Repo stars](https://img.shields.io/github/stars/Nilirad/bevy_prototype_lyon)](https://github.com/rparrett/bevy_prototype_lyon)
+[![CI](https://github.com/rparrett/bevy_prototype_lyon/actions/workflows/ci.yml/badge.svg)](https://github.com/rparrett/bevy_prototype_lyon/actions/workflows/ci.yml)
 
 `bevy_prototype_lyon` enables [**Bevy**](https://bevyengine.org) users to draw 2D shapes and paths, like triangles, circles, rectangles, lines, arcs and beziers.
 
@@ -13,7 +13,7 @@
 
 ## How does it work?
 
-Currently Bevy does not support drawing custom shapes in an easy way. This crate uses a variation of Bevy's `SpriteBundle` with custom meshes to draw shapes. The [**lyon**](https://docs.rs/lyon_tessellation) crate is used to generate those custom meshes.
+Currently Bevy does not support drawing custom shapes in an easy way. This crate uses a variation of Bevy's `Mesh2d` with custom meshes to draw shapes. The [**lyon**](https://docs.rs/lyon_tessellation) crate is used to generate those custom meshes.
 
 ## Usage
 
@@ -53,7 +53,7 @@ fn setup_system(mut commands: Commands) {
 }
 ```
 
-Don't forget to check out the [examples](https://github.com/Nilirad/bevy_prototype_lyon/tree/latest/examples) to learn more!
+Don't forget to check out the [examples](https://github.com/rparrett/bevy_prototype_lyon/tree/latest/examples) to learn more!
 
 ## Bevy versions supported
 

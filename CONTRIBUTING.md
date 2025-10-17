@@ -71,5 +71,5 @@ that negatively impact established use cases.
 Therefore they should be thoroughly discussed
 before implementing them.
 
-[issues]: https://github.com/Nilirad/bevy_prototype_lyon/issues
+[issues]: https://github.com/rparrett/bevy_prototype_lyon/issues
 [pull requests]: https://docs.github.com/en/pull-requests
