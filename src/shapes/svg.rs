@@ -176,7 +176,10 @@ impl Geometry<Builder> for SvgPathShape {
                             Angle {
                                 radians: x_axis_rotation as f32,
                             },
-                            ArcFlags { large_arc, sweep },
+                            ArcFlags {
+                                large_arc,
+                                sweep: !sweep,
+                            },
                             get_point_after_offset(x, y, offset_x, offset_y),
                         );
                     } else {
@@ -185,7 +188,10 @@ impl Geometry<Builder> for SvgPathShape {
                             Angle {
                                 radians: x_axis_rotation as f32,
                             },
-                            ArcFlags { large_arc, sweep },
+                            ArcFlags {
+                                large_arc,
+                                sweep: !sweep,
+                            },
                             get_corrected_relative_vector(x, y),
                         );
                     }
