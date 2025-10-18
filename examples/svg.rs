@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy::{color, prelude::*};
 use bevy_prototype_lyon::prelude::*;
 
 fn main() {
@@ -8,269 +8,67 @@ fn main() {
         .run();
 }
 
-#[derive(Component)]
-struct BlacksmithMarker;
-
-#[derive(Component)]
-struct ToolShackMarker;
-
 fn setup_system(mut commands: Commands) {
     commands.spawn((Camera2d, Msaa::Sample4));
 
-    commands
-        .spawn((
-            Name::new("Blacksmith"),
-            BlacksmithMarker,
-            Transform::from_translation(Vec3::new(-50., 0., 0.)),
-            Visibility::default(),
-        ))
-        //we split our art in this example to two children because our art is made out of 2 paths,
-        //one path who's width is 4,
-        //and another whose width is 2.5
-        //the art style was approximated from https://www.kenney.nl/assets/cartography-pack
-        .with_children(|parent| {
-            let svg_doc_size = Vec2::new(512., 512.);
+    // The tolerance for tesselating curves, in the same units as the svg path
+    let tolerance = 0.01;
+    // Equivalent ot the "svg viewport"
+    let svg_doc_size_in_px = Vec2::new(24., 24.);
 
-            let svg = shapes::SvgPathShape {
-                svg_path_string: BLACKSMITH_OUTLINE.to_owned(),
-                svg_doc_size_in_px: svg_doc_size.to_owned(),
-            };
-            parent.spawn(ShapeBuilder::with(&svg).stroke((Color::BLACK, 4.0)).build());
+    let icon_fill = Fill {
+        options: FillOptions::tolerance(tolerance),
+        color: color::palettes::tailwind::GRAY_50.into(),
+    };
+    let icon_fill_grey = Fill {
+        options: FillOptions::tolerance(tolerance),
+        color: color::palettes::tailwind::GRAY_400.into(),
+    };
+    let scale = Vec2::splat(10.).extend(1.);
 
-            let svg = shapes::SvgPathShape {
-                svg_path_string: BLACKSMITH_DETAIL.to_owned(),
-                svg_doc_size_in_px: svg_doc_size.to_owned(),
-            };
-            parent.spawn(ShapeBuilder::with(&svg).stroke((Color::BLACK, 2.5)).build());
-        });
+    commands.spawn((
+        ShapeBuilder::with(&shapes::SvgPathShape {
+            svg_path_string: CHAT_CODE.to_owned(),
+            svg_doc_size_in_px,
+        })
+        .fill(icon_fill)
+        .build(),
+        Transform {
+            translation: Vec3::new(-200., 0., 0.),
+            scale,
+            ..Default::default()
+        },
+    ));
 
-    commands
-        .spawn((
-            Name::new("Shack"),
-            ToolShackMarker,
-            Transform {
-                translation: Vec3::new(375., 0., 0.),
-                scale: Vec3::new(0.1, 0.1, 1.),
-                ..Default::default()
-            },
-            Visibility::default(),
-        ))
-        //we split our art in this example to two children because our art is made out of 2 paths,
-        //one path who's width is 4,
-        //and another whose width is 2.5
-        //the art style was approximated from https://www.kenney.nl/assets/cartography-pack
-        .with_children(|parent| {
-            let svg_doc_size = Vec2::new(1000., 1000.);
+    // A composite shape made of multiple SVG paths
 
-            let svg = shapes::SvgPathShape {
-                svg_path_string: SHACK.to_owned(),
-                svg_doc_size_in_px: svg_doc_size.to_owned(),
-            };
-            parent.spawn(
-                ShapeBuilder::with(&svg)
-                    .stroke((Color::BLACK, 20.0))
-                    .build(),
-            );
+    let planet_shape = ShapeBuilder::with(&shapes::SvgPathShape {
+        svg_path_string: PLANET.to_owned(),
+        svg_doc_size_in_px,
+    })
+    .fill(icon_fill)
+    .build();
 
-            // shack walls
-            let svg = shapes::SvgPathShape {
-                svg_path_string: SHACK_WALLS.to_owned(),
-                svg_doc_size_in_px: svg_doc_size.to_owned(),
-            };
-            parent.spawn(
-                ShapeBuilder::with(&svg)
-                    .stroke((Color::BLACK, 17.5))
-                    .build(),
-            );
-        });
+    let planet_mid_shape = ShapeBuilder::with(&shapes::SvgPathShape {
+        svg_path_string: PLANET_MID.to_owned(),
+        svg_doc_size_in_px,
+    })
+    .fill(icon_fill_grey)
+    .build();
+
+    commands.spawn((
+        planet_shape,
+        Transform {
+            translation: Vec3::new(200., 0., 0.),
+            scale,
+            ..default()
+        },
+        children![planet_mid_shape],
+    ));
 }
 
-const BLACKSMITH_OUTLINE: &str = "m
-210.49052,219.61666
-c
--54.97575,-3.12045
--153.83891,-43.5046
--181.900067,-79.34483
-41.944976,3.29834
-143.100787,1.42313
-185.138697,1.61897
-l
-6e-5,-0.003
-c
-41.78023,-0.87477
-200.563,-0.4537
-261.24529,0
-0.085,7.05106
-0.79737,22.71244
-1.07386,32.86306
--42.04814,8.31883
--101.90702,24.33338
--128.45794,63.97855
--10.53308,31.59203
-39.6912,45.827
-74.62215,55.19132
-1.14898,12.80889
-2.62233,32.62936
-2.46309,44.71853
--75.4682,-0.86499
--141.64601,-1.07063
--209.86695,-1.35786
--10.81491,-1.77566
--6.66734,-23.1495
--4.31819,-32.38456
-5.44628,-16.65332
-38.03788,-18.20507
-28.06768,-83.12367
--7.29786,-2.58188
--23.92259,-1.83114
--28.06768,-2.15756";
-
-const BLACKSMITH_DETAIL: &str = "m 213.72921,141.88787 -4e-5,80.1576";
-
-const SHACK: &str = "m
-254.47507,533.90714
-28.03554,-31.1502
-29.07393,-32.18938
-30.11225,-26.99742
-29.07391,-30.11185
-28.03556,-34.26547
-29.07391,-25.95885
-28.03556,-29.0741
-q
-13.49859,-16.61388
-21.80543,-21.80524
-l
-25.95885,-17.65243
-q
-20.76708,9.34498
-26.9972,26.99742
-6.2297,18.68994
-25.95885,35.30382
-l
-34.26568,29.07411
-31.15062,24.9205
-26.9972,23.88213
-24.92049,29.07412
-28.03556,37.38075
-q
-12.46024,18.69016
-22.84378,21.80522
-11.4219,4.15218
-28.03556,20.76687
-m
--332.27326,332.27305
-2.07692,-44.64881
-v
--40.496
-l
--6.23054,-39.45766
--3.11527,-42.57209
-1.03835,-35.30383
-6.23054,-46.72655
-44.64922,-3.1161
-38.4191,1.03627
-30.11226,-1.03627
-52.95605,3.1161
-q
-5.19218,20.76749
--2.0767,43.61128
--6.22972,22.84357
-1.03835,41.53437
-7.26806,18.68995
-3.11527,39.45682
-l
--6.23054,46.72656
-q
--1.03836,25.95884
-1.03835,35.30381
-l
-3.11527,42.5721
-m
-164.05971,-83.0681
--33.22711,-1.03629
--47.76428,1.03629
--4.15362,-32.18855
-4.15362,-50.87956
-34.26567,1.03628
-48.80264,-1.03628
-m
--498.40988,-83.06873
-30.11226,4.15217
-52.95606,-4.15217
-3.11505,33.22774
-q
--3.11505,11.42189
--3.11505,49.84099
-l
--28.03557,1.03628
--55.03275,-1.03628";
-
-const SHACK_WALLS: &str = "m
-254.47507,866.18019
-q
-18.69037,-88.25945
-8.30683,-113.17996
--9.34519,-24.92049
--8.30683,-52.95625
-11.42188,-69.57013
-0,-83.06873
-v
--83.06811
-l
--34.26568,42.57292
-q
--8.30684,13.49862
--48.80263,40.49519
-l
--49.841,-39.45683
-Q
-99.760328,557.78928
-88.33844,533.90714
-99.760328,499.64167
-136.10271,475.75953
-l
-67.49301,-53.99462
-57.10946,-62.30123
-q
-28.03557,-33.22712
-57.10947,-53.9946
-29.07391,-20.76688
-55.03276,-58.14762
-26.9972,-36.34218
-62.30124,-59.18595
-36.34239,-21.80524
-47.76428,-45.68738
-12.46024,-23.88276
-20.76708,-23.88276
-17.65201,12.46025
-43.61086,52.95626
-25.95885,40.49601
-65.4163,66.45486
-l
-72.68478,55.03235
-57.10946,58.14822
-60.22453,60.22453
-q
-36.34259,31.1502
-47.76427,60.22432
-11.42191,29.07412
-34.26569,45.68736
-23.88214,17.65244
-34.26589,16.61387
-l
--43.61088,41.53437
--39.45764,41.53374
-q
--17.65203,-26.99657
--38.4191,-40.49519
-l
--44.64922,-42.57292
-v
-60.22453
-105.91231
-83.06811
-h
--2.07671
-q
--7.26826,4.15217
-2.07671,83.0681";
+// SVG paths by 480 Design under the CC BY 4.0 license
+// https://www.figma.com/community/file/1166831539721848736/solar-icons-set
+const CHAT_CODE: &str = "m13.087 21.388l.542-.916c.42-.71.63-1.066.968-1.262c.338-.197.763-.204 1.613-.219c1.256-.021 2.043-.098 2.703-.372a5 5 0 0 0 2.706-2.706C22 14.995 22 13.83 22 11.5v-1c0-3.273 0-4.91-.737-6.112a5 5 0 0 0-1.65-1.651C18.41 2 16.773 2 13.5 2h-3c-3.273 0-4.91 0-6.112.737a5 5 0 0 0-1.651 1.65C2 5.59 2 7.228 2 10.5v1c0 2.33 0 3.495.38 4.413a5 5 0 0 0 2.707 2.706c.66.274 1.447.35 2.703.372c.85.015 1.275.022 1.613.219c.337.196.548.551.968 1.262l.542.916c.483.816 1.69.816 2.174 0M14.97 7.299a.75.75 0 0 1 1.06 0l.209.209c.635.635 1.165 1.165 1.529 1.642c.384.503.654 1.035.654 1.68c0 .644-.27 1.176-.654 1.68c-.364.476-.894 1.006-1.53 1.642l-.208.208a.75.75 0 1 1-1.06-1.06l.171-.172c.682-.682 1.139-1.141 1.434-1.528c.283-.37.347-.586.347-.77s-.064-.4-.347-.77c-.295-.388-.752-.847-1.434-1.529l-.171-.171a.75.75 0 0 1 0-1.06m-.952-1.105a.75.75 0 1 0-1.449-.388l-2.588 9.66a.75.75 0 1 0 1.45.387zM9.03 7.3a.75.75 0 0 1 0 1.06l-.171.172c-.682.682-1.139 1.141-1.434 1.529c-.283.37-.347.585-.347.77c0 .184.064.4.347.77c.295.387.752.846 1.434 1.528l.171.171a.75.75 0 1 1-1.06 1.06l-.172-.17l-.037-.037c-.635-.636-1.165-1.165-1.529-1.643c-.384-.503-.654-1.035-.654-1.68c0-.644.27-1.176.654-1.68c.364-.476.894-1.006 1.53-1.641l.036-.037l.172-.172a.75.75 0 0 1 1.06 0";
+const PLANET: &str = "M21.206 15.912a41 41 0 0 0-.711.3l-.01.005c-.487.21-1.045.45-1.654.674c-1.226.454-2.693.86-4.322.86c-1.813 0-3.203-.486-4.317-1.02c-.43-.206-.829-.425-1.18-.617l-.272-.15c-.43-.232-.764-.399-1.062-.493a16.4 16.4 0 0 0-3.59-.677a16 16 0 0 0-1.453-.048l-.077.003h-.021l-.152.008a10.005 10.005 0 0 0 18.821 1.155M3.237 7.179l.297.302l.003.004l.019.018l.086.081c.079.072.2.18.36.31c.32.26.795.61 1.404.96c1.219.704 2.949 1.396 5.03 1.396c1.374 0 2.426-.394 3.318-.86c.355-.186.675-.377.993-.567l.275-.163c.392-.232.81-.468 1.234-.614a15 15 0 0 1 3.391-.743a11 11 0 0 1 1.155-.052A10 10 0 0 0 12 2a10 10 0 0 0-8.763 5.179";
+const PLANET_MID: &str = "M21.775 14.118Q22 13.092 22 12a10 10 0 0 0-.525-3.206l-.527-.038h-.011l-.051-.003a10 10 0 0 0-1.096.043a13.4 13.4 0 0 0-3.047.67c-.263.09-.563.252-.958.485l-.248.148c-.322.193-.69.413-1.088.62c-1.03.539-2.323 1.031-4.012 1.031c-2.418 0-4.407-.803-5.78-1.596a12 12 0 0 1-1.6-1.096a9 9 0 0 1-.48-.415a10.1 10.1 0 0 0-.498 4.628l.385-.02h.011l.027-.001a9 9 0 0 1 .45-.006c.303.002.733.014 1.253.055c1.037.08 2.447.277 3.923.742c.45.141.899.373 1.327.605l.299.163c.346.19.697.383 1.087.57c.98.47 2.144.871 3.668.871c1.383 0 2.662-.344 3.802-.766c.571-.21 1.099-.437 1.591-.65l.018-.007c.475-.204.937-.403 1.343-.538z";
