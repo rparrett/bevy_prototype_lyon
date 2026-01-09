@@ -11,8 +11,10 @@ use crate::geometry::Geometry;
 
 /// Defines the frame of reference for the extents of a [`Rectangle`].
 #[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Default)]
 pub enum RectangleOrigin {
     /// The extents of the rectangle are drawn relative to the center.
+    #[default]
     Center,
     /// The extents of the rectangle are drawn from the bottom-left corner.
     BottomLeft,
@@ -26,11 +28,6 @@ pub enum RectangleOrigin {
     CustomCenter(Vec2),
 }
 
-impl Default for RectangleOrigin {
-    fn default() -> Self {
-        Self::Center
-    }
-}
 
 /// Radii for arcs rounding the corners of a [`Rectangle`].
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
