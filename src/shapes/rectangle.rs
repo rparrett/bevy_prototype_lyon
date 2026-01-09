@@ -10,8 +10,7 @@ use lyon_tessellation::{
 use crate::geometry::Geometry;
 
 /// Defines the frame of reference for the extents of a [`Rectangle`].
-#[derive(Debug, Clone, Copy, PartialEq)]
-#[derive(Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub enum RectangleOrigin {
     /// The extents of the rectangle are drawn relative to the center.
     #[default]
@@ -27,7 +26,6 @@ pub enum RectangleOrigin {
     /// The extents of the rectangle are drawn relative to a custom point.
     CustomCenter(Vec2),
 }
-
 
 /// Radii for arcs rounding the corners of a [`Rectangle`].
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
