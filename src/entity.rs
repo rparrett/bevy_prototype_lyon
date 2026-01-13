@@ -1,6 +1,6 @@
 //! Custom Bevy ECS bundle for shapes.
 
-use bevy::prelude::*;
+use bevy::{prelude::*, sprite_render::MeshMaterial2d};
 use lyon_algorithms::path::Builder;
 use lyon_tessellation::{self as tess};
 
