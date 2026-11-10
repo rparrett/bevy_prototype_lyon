@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.18.0
+
+* Upgrade to Bevy 0.20 by @rparrett in <https://github.com/rparrett/bevy_prototype_lyon/pull/300>
+
 ## 0.17.0
 
 * Upgrade to Bevy 0.19 by @rparrett in <https://github.com/rparrett/bevy_prototype_lyon/pull/298>
