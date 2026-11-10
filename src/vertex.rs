@@ -3,13 +3,13 @@ use lyon_tessellation::{
     self as tess, FillVertex, FillVertexConstructor, StrokeVertex, StrokeVertexConstructor,
 };
 
-/// The index type of a Bevy [`Mesh`](bevy::render::mesh::Mesh).
+/// The index type of a Bevy [`Mesh`](bevy::mesh::Mesh).
 type IndexType = u32;
 /// Lyon's [`VertexBuffers`] generic data type defined for [`Vertex`].
 pub type VertexBuffers = tess::VertexBuffers<Vertex, IndexType>;
 
 /// A vertex with all the necessary attributes to be inserted into a Bevy
-/// [`Mesh`](bevy::render::mesh::Mesh).
+/// [`Mesh`](bevy::mesh::Mesh).
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vertex {
     pub position: [f32; 2],
