@@ -58,9 +58,9 @@ fn planet_icon() -> impl Scene {
     .build();
 
     bsn! {
-        template_value(planet_shape)
+        planet_shape
         Children [
-            template_value(planet_mid_shape)
+            planet_mid_shape
         ]
     }
 }
@@ -80,7 +80,7 @@ fn setup_system(mut commands: Commands) {
     ));
 
     commands.spawn_scene(bsn! {
-        planet_icon()
+        @planet_icon()
         Transform {
             translation: Vec3::new(200., 0., 0.),
             scale,
